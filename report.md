@@ -1,6 +1,6 @@
 # Is it easier to fix the application than to detect attacks? - case Metasploitable 3 and Snort
 
-## Setup - see [setup.md](setup.md)
+## Setup - [setup.md](setup.md)
 
 ## Exploits
 
@@ -15,12 +15,12 @@ As a precondition for this, I assume that as an attacker we know the IP of the t
 ```shell
 PS C:\Users\vagrant> ipconfig
 
-...
+
 IPv4 Address....................:172.28.128.3
-...
+
 ```
 
-Now that we now the IP of the target system, let's switch to host system (attacker) and investigate what ports are open. Let's open metasploit console by writing:
+Now that we now the IP of the target system, let's switch to host system (attacker) and investigate what ports are open with metasploit.
 
 ```shell
 cd /opt/metasploit-framework/bin 
@@ -47,7 +47,7 @@ msf > db_nmap 172.28.128.3
 [*] Nmap: 49160/tcp open  unknown
 ```
 
-Okay, now we have something to work with.
+Now we have something to work with.
 
 #### Detection
 
@@ -205,12 +205,12 @@ It works! This could be refined further by e.g blacklisting IP's that try to log
 
 ## Discussion
 
-So is it easier to fix the application or is IDS viable altenative for the fix? The first thing that comes to mind based on this experiment that IDSs such as Snort rely very heavily that user knows what he is doing. I made e.g. following mistakes on the way:
+So is it easier to fix the application or is IDS viable altenative for the fix? Based on this relative narrow scoped expriment, it seems that IDSs such as Snort rely very heavily that user knows what he is doing. I made e.g. following mistakes on the way:
 
 1. Some rules were commented out
 2. Some ports were not included in various places
 
-Because there is some many possible mistakes that can be done, heavily relying on Snort requires a lot of testing. If you need to heavily configure your IDS that it detects (almost) all possible attacks, fixing the application in the first place have to be really problematic to not do it. The first two vulnerabilities showed here, ElasticSearch and Apache Struts have both been patched.
+Because there is some many possible mistakes that can be done, heavily relying on Snort requires a lot of testing and configuring. If you need to heavily configure your IDS that it detects (almost) all possible attacks, fixing the application in the first place have to be really problematic to not do it. The first two vulnerabilities showed here, ElasticSearch and Apache Struts have both been patched, so usually patching the dependencies is a good start.
 
 Third "vulnerability", SSH brute force and weak credentials,  is something that I believe IDS is good for. It's usually relatively easy to detect such attacks and block the upcoming IP's before they have been able to try too many user/pass combinations. This is a natural place for IDS, detecting suspicious behavior, not as a replacement for security patches.
 
